@@ -7,6 +7,7 @@ import numpy as np
 repo = 'rootbeer'  # Change if analyzing a different repo
 csv_file = f'data/author_file_touches_{repo}.csv'
 
+
 filenames = []
 authors = []
 weeks = []
