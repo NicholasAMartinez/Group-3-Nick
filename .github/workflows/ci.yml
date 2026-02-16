@@ -31,6 +31,7 @@ jobs:
         run: pip install flake8
 
       - name: Run Flake8 Linting
+        id: lint
         run: flake8 src --count --select=E9,F63,F7,F82 --show-source --statistics
 
       - name: Extract Coverage Percentage
@@ -49,5 +50,15 @@ jobs:
           label: Code Coverage
           message: ${{ env.TOTAL_COVERAGE }}%
           color: green
-          labelColor: '2d3339'
-          namedLogo: python
+
+      
+      - name: Update Lint Badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: 97068e463a6c1e11e171f51966153a5b
+          filename: lint.json
+          label: Lint
+          message: ${{ steps.lint.outcome == 'success' && 'passing' || 'failing' }}
+          color: ${{ steps.lint.outcome == 'success' && 'green' || 'red' }}
+
