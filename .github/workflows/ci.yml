@@ -24,6 +24,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Run Tests with Pytest
+        run: pytest --cov=src --cov-report=term-missing
+
+
       - name: Extract Coverage Percentage
         shell: bash
         run: |
@@ -33,9 +37,6 @@ jobs:
           PERCENT=$(echo "$OUTPUT" | grep "TOTAL" | awk '{print $4}' | sed 's/%//')
           
           echo "TOTAL_COVERAGE=$PERCENT" >> $GITHUB_ENV
-
-      - name: Run Tests with Pytest
-        run: pytest --cov=src --cov-report=term-missing
 
       - name: Install Flake8
         run: pip install flake8
