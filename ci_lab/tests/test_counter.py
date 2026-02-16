@@ -14,6 +14,14 @@ how to call the web service and assert what it should return.
 import pytest
 from src import app
 from http import HTTPStatus
+from src.status import (
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_204_NO_CONTENT,
+    HTTP_404_NOT_FOUND,
+    HTTP_405_METHOD_NOT_ALLOWED,
+    HTTP_409_CONFLICT
+)
 
 @pytest.fixture()
 def client():
@@ -197,7 +205,11 @@ class TestCounterEndpoints:
         assert response.status_code == HTTPStatus.OK
         assert response.get_json() == {"test1": 0}
 
-        # TODO: Add an assertion to check that retrieving the counter still works
+        # DONE: Add an assertion to check that retrieving the counter still works.
+        client.put('/counters/test1')                       # Increment to verify it still exists.
+        response_get = client.get('/counters/test1')        # Retrieve to verify it still exists and is incremented.
+        assert response_get.get_json() == {"test1": 1}      # Verify it was incremented from 0 to 1, confirming it still exists.
+        # We now know that the counter still exists and works.
 
     # ===========================
     # Test: Prevent resetting a non-existent counter
@@ -277,3 +289,17 @@ class TestCounterEndpoints:
         assert response.status_code == HTTPStatus.BAD_REQUEST
 
         # TODO: Add an assertion to verify the error message specifically says 'Invalid counter name'S
+
+    # ===========================
+    # Test: Ensure that the src/status.py file has the correct HTTP status code constants defined
+    # Author: Nicholas Martinez
+    # Modification: Check that all expected status codes are defined and have the correct values.
+    # ===========================
+    def test_status_codes(self):
+        """Test that HTTP status code constants are equal to their corresponding HTTPStatus values"""
+        assert HTTP_200_OK == HTTPStatus.OK
+        assert HTTP_201_CREATED == HTTPStatus.CREATED
+        assert HTTP_204_NO_CONTENT == HTTPStatus.NO_CONTENT
+        assert HTTP_404_NOT_FOUND == HTTPStatus.NOT_FOUND
+        assert HTTP_405_METHOD_NOT_ALLOWED == HTTPStatus.METHOD_NOT_ALLOWED
+        assert HTTP_409_CONFLICT == HTTPStatus.CONFLICT
