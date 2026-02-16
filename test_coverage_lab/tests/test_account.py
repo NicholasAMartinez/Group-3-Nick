@@ -117,7 +117,7 @@ Each test should include:
 # Target Method: deposit()
 
 # ===========================
-# Test: Invalid Role Assignment
+# Test: Valid Withdrawal
 # Author: Nicholas Martinez
 # Date: 2026-02-15
 # Description: Ensure valid balance after a valid withdrawal.
