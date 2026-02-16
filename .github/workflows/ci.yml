@@ -49,4 +49,5 @@ jobs:
           label: Code Coverage
           message: ${{ env.TOTAL_COVERAGE }}%
           color: green
+          labelColor: '2d3339'
           namedLogo: python
